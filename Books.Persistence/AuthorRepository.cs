@@ -7,6 +7,7 @@ using Books.Core.DataTransferObjects;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Books.Persistence.Comparer;
+using System;
 
 namespace Books.Persistence
 {
@@ -26,17 +27,46 @@ namespace Books.Persistence
             .ToArrayAsync();
 
         public async Task<AuthorDto[]> GetAuthorOverViewAsync()
-            => await _dbContext
-            .Authors
-            .Include(a => a.BookAuthors)
-            .ThenInclude(a => a.Book)
-            .Select(a => new AuthorDto()
+        {
+            List<AuthorDto> dtos = new List<AuthorDto>();
+
+            var authors = await _dbContext
+                    .Authors
+                    .Include(a => a.BookAuthors)
+                    .ThenInclude(a => a.Book)
+                    .OrderBy(a => a.Name)
+                    .ToArrayAsync();
+
+            foreach (var author in authors)
             {
-                Author = a.Name,
-                BookCount = a.BookAuthors.Count(),
-                PublisherNames = a.BookAuthors.Select(ba => ba.Book.Publishers)
-            })
-            .OrderBy(dto => dto.Author)
-            .ToArrayAsync();
+                AuthorDto newDto = new AuthorDto();
+
+                newDto.Author = author.Name;
+                newDto.BookCount = author.BookAuthors.Count;
+                newDto.Books = author.BookAuthors.Select(ba => ba.Book);
+
+                var publisherNames = author.BookAuthors
+                    .GroupBy(ba => ba.Book.Publishers)
+                    .Select(grp => Tuple.Create(
+                        grp.Key,
+                        grp.Count()));
+
+                foreach (var tuple in publisherNames)
+                {
+                    if (newDto.Publishers == null)
+                    {
+                        newDto.Publishers = $"{tuple.Item1} ({tuple.Item2})";
+                    }
+                    else
+                    {
+                        newDto.Publishers += $" / {tuple.Item1} ({tuple.Item2})";
+                    }
+                }
+
+                dtos.Add(newDto);
+            }
+
+            return dtos.OrderByDescending(dto => dto.BookCount).ToArray();
+        }
     }
 }

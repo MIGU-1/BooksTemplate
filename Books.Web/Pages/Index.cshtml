@@ -10,22 +10,43 @@
   <a class="btn btn-primary" asp-page="Authors/Create">Autor/in Hinzufügen</a>
 </p>
 <table class="table">
-  <thead>
-    <tr>
-      <th>
-          @Html.DisplayNameFor(model => model.Authors[0].Author)
-      </th>
-      <th>
-           @Html.DisplayNameFor(model => model.Authors[0].BookCount)
-      </th>
-      <th>
-          @Html.DisplayNameFor(model => model.Authors[0].Publishers)
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    
-  </tbody>
+    <thead>
+        <tr>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Authors[0].Author)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.Authors[0].BookCount)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.Authors[0].Publishers)
+            </th>
+            <th align="right">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var author in Model.Authors)
+        {
+            <tr>
+                <td align="left">
+                    <a asp-page="./Author/Books" asp-route-sensorId="@author.Id">
+                        @Html.DisplayFor(model => author.Author)
+                    </a>
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(model => author.BookCount)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(model => author.Publishers)
+                </td>
+                <td align="left">
+                    <a asp-page="./Author/Edit" asp-route-sensorId="@author.Id">Edit Author</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 

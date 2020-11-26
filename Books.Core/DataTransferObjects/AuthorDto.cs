@@ -18,9 +18,12 @@ namespace Books.Core.DataTransferObjects
 
         public IEnumerable<Book> Books { get; set; }
 
-        public IEnumerable<string> PublisherNames { get; set; }
-
         [DisplayName("Verläge")]
         public string Publishers { get; set; }
+
+        public AuthorDto()
+        {
+            Books = new List<Book>();
+        }
     }
 }
