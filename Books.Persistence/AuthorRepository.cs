@@ -39,11 +39,12 @@ namespace Books.Persistence
 
             foreach (var author in authors)
             {
-                AuthorDto newDto = new AuthorDto();
-
-                newDto.Author = author.Name;
-                newDto.BookCount = author.BookAuthors.Count;
-                newDto.Books = author.BookAuthors.Select(ba => ba.Book);
+                AuthorDto newDto = new AuthorDto
+                {
+                    Author = author.Name,
+                    BookCount = author.BookAuthors.Count,
+                    Books = author.BookAuthors.Select(ba => ba.Book)
+                };
 
                 var publisherNames = author.BookAuthors
                     .GroupBy(ba => ba.Book.Publishers)
