@@ -31,7 +31,7 @@
         {
             <tr>
                 <td align="left">
-                    <a asp-page="./Author/Books" asp-route-sensorId="@author.Id">
+                    <a asp-page="./Authors/Details" asp-route-authorId="@author.Id">
                         @Html.DisplayFor(model => author.Author)
                     </a>
                 </td>
@@ -42,7 +42,7 @@
                     @Html.DisplayFor(model => author.Publishers)
                 </td>
                 <td align="left">
-                    <a asp-page="./Author/Edit" asp-route-sensorId="@author.Id">Edit Author</a>
+                    <a asp-page="./Authors/Details" asp-route-authorId="@author.Id">Edit Author</a>
                 </td>
             </tr>
         }

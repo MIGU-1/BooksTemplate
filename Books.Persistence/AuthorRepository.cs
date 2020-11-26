@@ -26,7 +26,45 @@ namespace Books.Persistence
             .OrderBy(a => a.Name)
             .ToArrayAsync();
 
-        public async Task<AuthorDto[]> GetAuthorOverViewAsync()
+        public async Task<AuthorDto> GetAuthorDtoByIdAsync(int value)
+        {
+            var author = await _dbContext
+                .Authors
+                .Where(a => a.Id == value)
+                .Include(a => a.BookAuthors)
+                .ThenInclude(a => a.Book)
+                .SingleOrDefaultAsync();
+
+            AuthorDto newDto = new AuthorDto
+            {
+                Id = author.Id,
+                Author = author.Name,
+                BookCount = author.BookAuthors.Count,
+                Books = author.BookAuthors.Select(ba => ba.Book)
+            };
+
+            var publisherNames = author.BookAuthors
+                .GroupBy(ba => ba.Book.Publishers)
+                .Select(grp => Tuple.Create(
+                    grp.Key,
+                    grp.Count()));
+
+            foreach (var tuple in publisherNames)
+            {
+                if (newDto.Publishers == null)
+                {
+                    newDto.Publishers = $"{tuple.Item1} ({tuple.Item2})";
+                }
+                else
+                {
+                    newDto.Publishers += $" / {tuple.Item1} ({tuple.Item2})";
+                }
+            }
+
+            return newDto;
+        }
+
+        public async Task<AuthorDto[]> GetAuthorDtosAsync()
         {
             List<AuthorDto> dtos = new List<AuthorDto>();
 
@@ -41,6 +79,7 @@ namespace Books.Persistence
             {
                 AuthorDto newDto = new AuthorDto
                 {
+                    Id = author.Id,
                     Author = author.Name,
                     BookCount = author.BookAuthors.Count,
                     Books = author.BookAuthors.Select(ba => ba.Book)

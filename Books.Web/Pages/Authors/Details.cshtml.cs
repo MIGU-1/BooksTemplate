@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 
 namespace Books.Web.Pages.Authors
 {
-  public class DetailsModel : PageModel
-  {
-    private readonly IUnitOfWork _uow;
-
-    public AuthorDto AuthorInfo { get; set; }
-
-    public DetailsModel(IUnitOfWork uow)
+    public class DetailsModel : PageModel
     {
-      _uow = uow;
-    }
+        private readonly IUnitOfWork _uow;
 
-    public IActionResult OnGet(int? id)
-    {
-      return Page();
+        public AuthorDto AuthorInfo { get; set; }
+
+        public DetailsModel(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<IActionResult> OnGet(int? authorId)
+        {
+            if(!authorId.HasValue)
+            {
+                return Page();
+            }
+
+            AuthorInfo = await _uow.Authors
+                .GetAuthorDtoByIdAsync(authorId.Value);
+
+            return Page();
+        }
     }
-  }
 }

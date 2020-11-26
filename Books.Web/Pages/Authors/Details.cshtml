@@ -2,29 +2,53 @@
 @model DetailsModel
 
 @{
-  ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details";
 }
 
-<h1>TODO: Names des Autors</h1>
+<h1>@Model.AuthorInfo.Author</h1>
+
 
 <h4>Bücher:</h4>
 <table class="table">
-  <thead>
-    <tr>
-      <th>
-        Titel
-      </th>
-      <th>
-        Isbn
-      </th>
-      <th>
-        Verlag
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    
+    <thead>
+        <tr>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.AuthorInfo.Books.First().Title)
+            </th>
+            <th align="center">
+                @Html.DisplayNameFor(model => model.AuthorInfo.Books.First().Isbn)
+            </th>
+            <th align="left">
+                @Html.DisplayNameFor(model => model.AuthorInfo.Books.First().Publishers)
+            </th>
+            <th align="right">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.AuthorInfo.Books)
+        {
+            <tr>
+                <td align="left">
+                    <a asp-page="./Author/Books" asp-route-sensorId="@book.Id">
+                        @Html.DisplayFor(model => book.Title)
+                    </a>
+                </td>
+                <td align="center">
+                    @Html.DisplayFor(model => book.Isbn)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(model => book.Publishers)
+                </td>
+                <td align="left">
+                    <a asp-page="./Author/Edit" asp-route-sensorId="@book.Id">Edit Book</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
 </table>
 <div>
-  <a asp-page="../Index">Zurück zur Liste</a>
+    <a asp-page="../Index">Zurück zur Liste</a>
 </div>

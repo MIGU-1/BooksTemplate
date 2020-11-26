@@ -23,7 +23,7 @@ namespace Books.Web.Pages
         public async Task<IActionResult> OnGet()
         {
             Authors = await _uow.Authors
-                .GetAuthorOverViewAsync();
+                .GetAuthorDtosAsync();
 
             return Page();
         }

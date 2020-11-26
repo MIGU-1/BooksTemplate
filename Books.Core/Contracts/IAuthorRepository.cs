@@ -9,6 +9,7 @@ namespace Books.Core.Contracts
     public interface IAuthorRepository
     {
         Task<Author[]> GetAllAsync();
-        Task<AuthorDto[]> GetAuthorOverViewAsync();
+        Task<AuthorDto[]> GetAuthorDtosAsync();
+        Task<AuthorDto> GetAuthorDtoByIdAsync(int value);
     }
 }
