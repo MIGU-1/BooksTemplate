@@ -31,6 +31,11 @@ namespace Books.Persistence
         public void Remove(Book selectedBook)
             => _dbContext.Books
             .Remove(selectedBook);
+
+        public void Update(Book book)
+            => _dbContext
+            .Books
+            .Update(book);
     }
 
 }

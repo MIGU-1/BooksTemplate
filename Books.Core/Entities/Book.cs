@@ -36,7 +36,7 @@ namespace Books.Core.Entities
                     {
                         if (authorNames != "")
                         {
-                            authorNames += $", {author.Author.Name}";
+                            authorNames += $"/ {author.Author.Name}";
                         }
                         else
                         {

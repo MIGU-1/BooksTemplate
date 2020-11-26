@@ -9,5 +9,6 @@ namespace Books.Core.Contracts
         Task AddRangeAsync(IEnumerable<Book> books);
         Task<Book[]> GetAllAsync();
         void Remove(Book selectedBook);
+        void Update(Book book);
     }
 }

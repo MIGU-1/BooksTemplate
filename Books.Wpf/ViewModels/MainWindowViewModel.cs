@@ -15,7 +15,7 @@ namespace Books.Wpf.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private Book[] _allBooks;
+        private List<Book> _allBooks;
         private ObservableCollection<Book> _books;
         private Book _selectedBook;
         private string _searchText;
@@ -64,9 +64,10 @@ namespace Books.Wpf.ViewModels
         {
             await using IUnitOfWork uow = new UnitOfWork();
 
-            _allBooks = await uow
+            _allBooks = (await uow
                 .Books
-                .GetAllAsync();
+                .GetAllAsync())
+                .ToList();
 
             Books = new ObservableCollection<Book>(_allBooks);
         }
@@ -164,6 +165,7 @@ namespace Books.Wpf.ViewModels
 
                                 if (MessageBox.Show("Buch löschen?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                                 {
+                                    _allBooks.Remove(SelectedBook);
                                     uow.Books.Remove(SelectedBook);
                                     await uow.SaveChangesAsync();
                                     RefreshDataGrid();
