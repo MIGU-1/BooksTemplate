@@ -24,5 +24,19 @@ namespace Books.Persistence
             .Authors
             .OrderBy(a => a.Name)
             .ToArrayAsync();
+
+        public async Task<AuthorDto[]> GetAuthorOverViewAsync()
+            => await _dbContext
+            .Authors
+            .Include(a => a.BookAuthors)
+            .ThenInclude(a => a.Book)
+            .Select(a => new AuthorDto()
+            {
+                Author = a.Name,
+                BookCount = a.BookAuthors.Count(),
+                PublisherNames = a.BookAuthors.Select(ba => ba.Book.Publishers)
+            })
+            .OrderBy(dto => dto.Author)
+            .ToArrayAsync();
     }
 }

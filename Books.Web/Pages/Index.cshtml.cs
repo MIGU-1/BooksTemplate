@@ -10,18 +10,22 @@ using System.Threading.Tasks;
 
 namespace Books.Web.Pages
 {
-  public class IndexModel : PageModel
-  {
-    private readonly IUnitOfWork _uow;
-
-    public IndexModel(IUnitOfWork uow)
+    public class IndexModel : PageModel
     {
-      _uow = uow;
-    }
+        private readonly IUnitOfWork _uow;
+        public AuthorDto[] Authors; 
 
-    public IActionResult OnGet()
-    {
-      return Page();
+        public IndexModel(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<IActionResult> OnGet()
+        {
+            Authors = await _uow.Authors
+                .GetAuthorOverViewAsync();
+
+            return Page();
+        }
     }
-  }
 }
