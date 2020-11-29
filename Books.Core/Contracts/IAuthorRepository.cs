@@ -11,5 +11,6 @@ namespace Books.Core.Contracts
         Task<Author[]> GetAllAsync();
         Task<AuthorDto[]> GetAuthorDtosAsync();
         Task<AuthorDto> GetAuthorDtoByIdAsync(int value);
+        Task AddAsync(Author newAuthor);
     }
 }

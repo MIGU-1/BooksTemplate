@@ -20,6 +20,9 @@ namespace Books.Persistence
             _dbContext = dbContext;
         }
 
+        public async Task AddAsync(Author newAuthor)
+            => await _dbContext.AddAsync(newAuthor);
+
         public async Task<Author[]> GetAllAsync()
             => await _dbContext
             .Authors

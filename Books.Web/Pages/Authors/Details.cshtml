@@ -21,9 +21,6 @@
             <th align="left">
                 @Html.DisplayNameFor(model => model.AuthorInfo.Books.First().Publishers)
             </th>
-            <th align="right">
-                Actions
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +28,7 @@
         {
             <tr>
                 <td align="left">
-                    <a asp-page="./Author/Books" asp-route-sensorId="@book.Id">
+                    <a asp-page="./Author/Books" asp-route-bookId="@book.Id">
                         @Html.DisplayFor(model => book.Title)
                     </a>
                 </td>
@@ -40,9 +37,6 @@
                 </td>
                 <td align="left">
                     @Html.DisplayFor(model => book.Publishers)
-                </td>
-                <td align="left">
-                    <a asp-page="./Author/Edit" asp-route-sensorId="@book.Id">Edit Book</a>
                 </td>
             </tr>
         }
